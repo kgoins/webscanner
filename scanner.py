@@ -7,15 +7,20 @@ from tld import get_tld
 from scans import *
 
 def driver():
-        try:
-            url = sys.argv[1]
-            file_path = sys.argv[2]
-        except:
-            print "Usage: python driver.py url output_path"
-            print "Example: python driver.py http://www.google.com outfile.txt"
-            sys.exit()
+    try:
+        url = sys.argv[1]
+        file_path = sys.argv[2]
+    except:
+        print "Usage: python driver.py url output_path"
+        print "Example: python driver.py http://www.google.com outfile.txt"
+        sys.exit()
 
-	url_tld = get_tld(url)
+    url_tld = ""
+    if "http://www." not in url:
+    	url_tld = url
+    	url = "http://www." + url
+    else:
+    	url_tld = get_tld(url)
 
 	# run scans
 	url_ip = get_ip(url_tld)
@@ -23,10 +28,13 @@ def driver():
 	whois = get_whois(url_tld)
 
 	# output data
-	data = "Url IPs:\n" + str(url_ip) + \
+	data = "Url IPs:\n" + str(url_ip) + "\n" + \
 		"Url's whois file:\n" + str(whois) + \
 		"Url's robots.txt file:\n" + str(robots)
-		
+	
+	if os.path.exists(file_path):
+		os.remove(file_path)
+	
 	write_file(data, file_path)
 
 
