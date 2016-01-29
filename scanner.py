@@ -18,13 +18,14 @@ def driver():
 	url_tld = get_tld(url)
 
 	# run scans
-	url_ip = get_ip(url)
+	url_ip = get_ip(url_tld)
 	robots = get_robots(url)
 	whois = get_whois(url_tld)
 
+	# output data
 	data = "Url IPs:\n" + str(url_ip) + \
 		"Url's whois file:\n" + str(whois) + \
-		"Url's robots.txt file:\n" + str(robots) + \
+		"Url's robots.txt file:\n" + str(robots)
 		
 	write_file(data, file_path)
 
